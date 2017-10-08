@@ -21,8 +21,13 @@ void add_item(t_list *l, int item){
 		Function create a t_item for save the new item and add to the top of the list
 	*/
 	//create a t_item for save the new item 
+
 	t_item *t = malloc(sizeof(t_item));
 	t->data.d = item;
+	
+	if(l->qnt == 0){//and is the fist item add make the sentinel last in it
+		l->L->last = t;
+	}
 
 	t->next = l->L->next;//the t_item next point to the last item added in the list
 	l->L->next->prev = t;//the last item add in the list point to the new item(using the prev node)
@@ -30,6 +35,7 @@ void add_item(t_list *l, int item){
 	t->prev =  l->L;//the new item point to the t_list
 	l->qnt++;
 
+	l->L->first = t;//all the elements add is add at fisr item
 }
 void delete_item(t_list *l, t_item *item){
 	/*
@@ -85,10 +91,21 @@ void add_sort(t_list *l, int item){
 
 	t_item *aux = l->L->next;
 
+	if(l->qnt == 0){//if 0 both are the same item
+		l->L->first = t;
+		l->L->last = t;
+	}else if(l->L->first->data.d > item){//if the pointer that is in first is bigger that the item change
+		l->L->first = t;
+	}else if(item > l->L->last->data.d){//if the pointer that is in first is smaller that the item change
+		l->L->last = t;
+	}
+
 	while(aux != l->L && aux->data.d >= item) aux = aux->next;//find the first item that has a value higher value to the item to be  add
 
 	aux->prev->next = t;//the prev item to the item found points to the new item
 	t->prev = aux->prev; //the prev pointer of the new item points to the prev item
 	t->next = aux; //the new item points to the item found in next pointer
 	aux->prev = t;// the prev pointeir in the item founded points to the new item 
+	l->qnt--;
+
 }

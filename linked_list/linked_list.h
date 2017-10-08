@@ -17,6 +17,9 @@ struct t_item{
 	t_data data;
 	t_item *next;
 	t_item *prev;
+    //sentinel for the first and last item
+    t_item *first;
+    t_item *last;
 
 };
 //the head of the list
